@@ -12,3 +12,13 @@ include::{sourceDir}/src/main/kotlin/example/micronaut/MyController.kt[]
 
 [NOTE]
 In the browser go to http://localhost:8080/my/team and http://localhost:8080/my/stadium.
+To test the app, run `./gradlew test`
+
+
+Add test:
+
+[source,kotlin]
+.src/test/kotlin/example/micronaut/MyControllerTest.kt
+----
+include::{sourceDir}/src/test/kotlin/example/micronaut/MyControllerTest.kt[]
+----
