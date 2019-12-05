@@ -1,0 +1,22 @@
+Micronaut is also able to read a "list" of configurations that are related. Imagine we would like to declare stadiums and their
+attributes.
+
+[source,yml]
+.src/main/resources/application.yml
+----
+include::{sourceDir}/src/main/resources/application.yml[tag=stadiumConfig]
+----
+
+<1> This element will be the name of the bean.
+
+We can use `@EachProperty` which will cycle through the configuration and read each nested clause as a bean. The higher level
+property will be parameterized as the name.
+
+[source,kotlin]
+.src/main/kotlin/example/micronaut/StadiumConfiguration.kt
+----
+include::{sourceDir}/src/main/kotlin/example/micronaut/StadiumConfiguration.kt[]
+----
+
+<1> Establish the top layer of configuration
+<2> `name` is read in from the property key and send as a parameter to the bean.

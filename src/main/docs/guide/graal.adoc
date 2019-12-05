@@ -1,0 +1,13 @@
+include::{commondir}/common-graal-setup.adoc[]
+
+include::{commondir}/common-graal-nativeimage.adoc[]
+
+You can invoke the controller exposed by the native image:
+
+`curl "http://localhost:8080/my/stadium"`
+
+or
+
+`curl "http://localhost:8080/my/team"`
+
+include::{commondir}/common-graal-docker.adoc[]

@@ -1,0 +1,22 @@
+gettingStarted: 
+  title: Getting Started
+  requirements: What you will need
+  howto: How to complete the guide
+writingTheApp:
+  title: Writing the Application
+configurationProperties:
+  title: Team Configuration with @ConfigurationProperties
+  configurationPropertiesTest: Test @ConfigurationProperties
+configurationBuilder:
+  title: Team Admin Builder with @ConfigurationBuilder
+  configurationBuilderTest: Test @ConfigurationBuilder
+eachProperty:
+  title: Stadiums with @EachProperty
+  eachPropertyTest: Test @EachProperty
+runningTheApp:
+  title: Running the Application
+controller:
+  title: Controller
+graal:
+  title: Generating a Micronaut Application's Native Image with GraalVM
+next: Where To Go From Here?

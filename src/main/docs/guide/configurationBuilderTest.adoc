@@ -1,0 +1,11 @@
+We can validate `@ConfigurationBuilder` is applied properly with the following JUnit test. The test format is similar to previous tests.
+
+[source,kotlin]
+.src/test/kotlin/example/micronaut/TeamConfigurationBuilderTest.kt
+----
+include::{sourceDir}/src/test/kotlin/example/micronaut/TeamConfigurationBuilderTest.kt[]
+----
+
+<1> Properties which will invoke the builder methods on `TeamAdmin.Builder`
+<2> The builder object is now configured, so we must run `build()` on it to create the `TeamAdmin` object
+<3> Verify the object is created with the `applicaton.yml` properties

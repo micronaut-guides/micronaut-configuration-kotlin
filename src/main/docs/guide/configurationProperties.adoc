@@ -1,0 +1,18 @@
+Imagine a feature where you can configure a sports team in a declarative manner. The team has a few attributes like team name, color,
+and players.
+
+[source,yml]
+.src/main/resources/application.yml
+----
+include::{sourceDir}/src/main/resources/application.yml[tag=teamConfig]
+----
+
+With Micronaut we can use the `@ConfigurationProperties` annotation to slurp the configuration into a bean. Each property that matches
+the configuration in the `application.yml` will call the setter in the bean. The bean will be subsequently available for injection in the application!
+
+[source,kotlin]
+.src/main/kotlin/example/micronaut/TeamConfiguration.kt
+----
+include::{sourceDir}/src/main/kotlin/example/micronaut/TeamConfiguration.kt[tag=teamConfigClassNoBuilder]
+}
+----

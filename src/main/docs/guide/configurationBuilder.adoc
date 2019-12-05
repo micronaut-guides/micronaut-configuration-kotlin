@@ -1,0 +1,52 @@
+The Builder pattern is a great way to build configuration objects incrementally. Read about the Builder pattern in this
+https://dzone.com/articles/design-patterns-the-builder-pattern[DZone] article to learn more.  Micronaut supports the Builder
+pattern with `@ConfigurationBuilder`.
+
+Let's suppose we want to add team administrators to a team. The team administration is composed by using a builder pattern object.
+We can add a coach, manager and president to the team.
+
+[source,yml]
+.src/main/resources/application.yml
+----
+include::{sourceDir}/src/main/resources/application.yml[tag=allTeamConfig]
+----
+
+<1> `manager` property is an example of an element that will be built
+
+The `TeamAdmin` object abides by the Builder pattern.
+
+[source,kotlin]
+.src/main/kotlin/example/micronaut/TeamAdmin.kt
+----
+include::{sourceDir}/src/main/kotlin/example/micronaut/TeamAdmin.kt[]
+----
+
+<1> `TeamAdmin` is the configuration object which consumes the declared properties.
+<2> The builder object is used to incrementally construct the object.
+<3> An example of a builder method, where a attribute is set and then the builder itself is returned.
+<4> The final `build()` method creates the `TeamAdmin` object.
+
+Add a test for the builder:
+
+[source,kotlin]
+.src/test/kotlin/example/micronaut/TeamAdminTest.kt
+----
+include::{sourceDir}/src/test/kotlin/example/micronaut/TeamAdminTest.kt[]
+----
+
+At the bottom of `TeamConfiguration`, we add a `TeamAdmin.Builder` and annotate it with `@ConfigurationBuilder`.
+This tells Micronaut that configuration can be read in and an object can be constructed using the Builder pattern.
+
+[NOTE]
+We are using the builder only here, so we will have to call `builder.build()` to actually get the `TeamAdmin` object, at a later time.
+In our case, we will call `builder.build()` in the JUnit test.
+
+[source,kotlin]
+.src/main/kotlin/example/micronaut/TeamConfiguration.kt
+----
+include::{sourceDir}/src/main/kotlin/example/micronaut/TeamConfiguration.kt[tag=teamConfigClassBuilder]
+
+----
+
+<1> `prefixes` tells Micronaut to find methods that are prefixed by `with`; `configurationPrefix` allows the developer to customize the `application.yml` element
+<2> Instantiate the builder object so it can be populated with configuration values.

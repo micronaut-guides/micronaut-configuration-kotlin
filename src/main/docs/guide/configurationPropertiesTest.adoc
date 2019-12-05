@@ -1,0 +1,9 @@
+Let's validate that the bean is available in the application context and is created with the values declared in the `application.xml`.
+
+[source,kotlin]
+.src/test/kotlin/example/micronaut/TeamConfigurationTest.kt
+----
+include::{sourceDir}/src/test/kotlin/example/micronaut/TeamConfigurationTest.kt[]
+----
+
+<1> Start application context with configuration
