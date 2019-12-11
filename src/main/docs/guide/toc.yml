@@ -20,3 +20,5 @@ controller:
 graal:
   title: Generating a Micronaut Application's Native Image with GraalVM
 next: Where To Go From Here?
+help:
+  title: Help with Micronaut
