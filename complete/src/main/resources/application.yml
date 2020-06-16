@@ -1,6 +1,6 @@
 micronaut:
   application:
-    name: micronaut-configuration
+    name: complete
 ---
 # tag::allTeamConfig[]
 # tag::teamConfig[]

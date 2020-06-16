@@ -1,7 +1,5 @@
-profile: service
 applicationType: default
 defaultPackage: example.micronaut
----
 testFramework: junit
 sourceLanguage: kotlin
 buildTool: gradle
