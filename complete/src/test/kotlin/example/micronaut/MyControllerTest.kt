@@ -1,40 +1,37 @@
 package example.micronaut
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.BehaviorSpec
-import io.micronaut.context.ApplicationContext
-import io.micronaut.context.env.Environment
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
-import io.micronaut.runtime.server.EmbeddedServer
+import io.micronaut.http.client.annotation.Client
 import io.micronaut.test.annotation.MicronautTest
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import java.util.*
 import java.util.function.Consumer
+import javax.inject.Inject
 
 @MicronautTest
-class MyControllerTest : BehaviorSpec() {
-    init {
-        given("the math service") {
-            val embeddedServer = autoClose(ApplicationContext.run(EmbeddedServer::class.java, mapOf(), Environment.TEST))
+class MyControllerTest {
+    @Inject
+    @field:Client("/")
+    lateinit var client: HttpClient
 
-            val client = autoClose(embeddedServer.applicationContext.createBean(HttpClient::class.java, embeddedServer.url))
+    @Test
+    fun testMyTeam() {
+        val teamConfiguration = client.toBlocking()
+                .retrieve(HttpRequest.GET<Any>("/my/team"), TeamConfiguration::class.java)
+        Assertions.assertEquals("Steelers", teamConfiguration.name)
+        Assertions.assertEquals("Black", teamConfiguration.color)
+        val expectedPlayers = Arrays.asList("Mason Rudolph", "James Connor")
+        Assertions.assertEquals(expectedPlayers.size, teamConfiguration.playerNames!!.size)
+        expectedPlayers.forEach(Consumer { name: String? -> Assertions.assertTrue(teamConfiguration.playerNames!!.contains(name!!)) })
+    }
 
-            `when`("fetching the teams config") {
-                val expectedPlayers = listOf("Mason Rudolph", "James Connor")
-                val teamConfiguration = client.toBlocking().retrieve(HttpRequest.GET<Any>("/my/team"), TeamConfiguration::class.java)
-                then("the config values from application.yml are used") {
-                    teamConfiguration.name shouldBe "Steelers"
-                    teamConfiguration.color shouldBe "Black"
-                    expectedPlayers.size shouldBe teamConfiguration.playerNames!!.size
-                    expectedPlayers.forEach(Consumer { name: String? -> teamConfiguration.playerNames!!.contains(name) shouldBe true })
-                }
-            }
-            `when`("fetching the stadium config") {
-                val conf = client.toBlocking().retrieve(HttpRequest.GET<Any>("/my/stadium"), StadiumConfiguration::class.java)
-                then("the config values from application.yml are used") {
-                    conf.city shouldBe "Pittsburgh"
-                    conf.size shouldBe 35000
-                }
-            }
-        }
+    @Test
+    fun testMyStadium() {
+        val conf = client.toBlocking()
+                .retrieve(HttpRequest.GET<Any>("/my/stadium"), StadiumConfiguration::class.java)
+        Assertions.assertEquals("Pittsburgh", conf.city)
+        Assertions.assertEquals(35000, conf.size)
     }
 }

@@ -1,14 +1,14 @@
 package example.micronaut
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.BehaviorSpec
 import io.micronaut.context.ApplicationContext
-import io.micronaut.test.annotation.MicronautTest
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import java.util.function.Consumer
 
-@MicronautTest
-class TeamConfigurationBuilderTest : BehaviorSpec({
-    given("an application context started with configuration") {
+class TeamConfigurationBuilderTest {
+    @Test
+    fun anApplicationContextStartedWithConfiguration() {
         val names = listOf("Nirav Assar", "Lionel Messi")
         val items = mapOf("team.name" to "evolution",
                 "team.color" to "green",
@@ -17,23 +17,21 @@ class TeamConfigurationBuilderTest : BehaviorSpec({
                 "team.team-admin.president" to "Mark Scanell",
                 "team.player-names" to names)
         val ctx = ApplicationContext.run(ApplicationContext::class.java, items) // <1>
-        `when`("TeamConfiguration is retrieved from the context") {
-            val teamConfiguration = ctx.getBean(TeamConfiguration::class.java)
-            then("configuration properties are populated") {
-                teamConfiguration.name shouldBe "evolution"
-                teamConfiguration.color shouldBe "green"
-                teamConfiguration.playerNames!!.size shouldBe names.size
-                names.forEach(Consumer { name: String? -> teamConfiguration.playerNames!!.contains(name) shouldBe true })
-                teamConfiguration.builder.manager shouldBe "Jerry Jones"
-                teamConfiguration.builder.coach shouldBe "Tommy O'Neill"
-                teamConfiguration.builder.president shouldBe "Mark Scanell"
+        //`when`("TeamConfiguration is retrieved from the context") {
+        val teamConfiguration = ctx.getBean(TeamConfiguration::class.java)
+        //then("configuration properties are populated") {
+         assertEquals("evolution", teamConfiguration.name)
+         assertEquals("green", teamConfiguration.color)
+         assertEquals(names.size, teamConfiguration.playerNames!!.size)
+         names.forEach(Consumer { name: String? -> assertTrue(teamConfiguration.playerNames!!.contains(name)) })
+                assertEquals("Jerry Jones", teamConfiguration.builder.manager)
+                assertEquals("Tommy O'Neill", teamConfiguration.builder.coach)
+                assertEquals("Mark Scanell", teamConfiguration.builder.president)
 
                 val teamAdmin = teamConfiguration.builder.build() // <2>
-                teamAdmin.manager shouldBe "Jerry Jones" // <3>
-                teamAdmin.coach shouldBe "Tommy O'Neill"
-                teamAdmin.president shouldBe "Mark Scanell"
-            }
-        }
+                assertEquals("Jerry Jones", teamAdmin.manager)  // <3>
+                assertEquals("Tommy O'Neill", teamAdmin.coach)
+                assertEquals("Mark Scanell", teamAdmin.president)
         ctx.close()
     }
-})
+}
